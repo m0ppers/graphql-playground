@@ -44,7 +44,6 @@ import * as dotenv from 'dotenv'
 import { createAuthLink, createSubscriptionHandshakeLink } from 'aws-appsync'
 import { ApolloLink } from 'apollo-link'
 import { HttpLink } from 'apollo-link-http'
-import { GraphQLConfig } from 'graphql-playground-react/lib/graphqlConfig';
 
 // import { PermissionSession } from 'graphql-playground/lib/types'
 
