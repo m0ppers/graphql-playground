@@ -44,4 +44,4 @@ Create a `.graphqlconfig` config somewhere:
 }
 ```
 
-Then provide the API Key via environment (or using a .env file or or or).
+Then provide the API Key via environment (or using a .env file or or or) and open the directory in GraphQL Playground.
