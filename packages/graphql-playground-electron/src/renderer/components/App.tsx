@@ -41,6 +41,10 @@ import { connect } from 'react-redux'
 import { errify } from '../utils/errify'
 import { createStructuredSelector } from 'reselect'
 import * as dotenv from 'dotenv'
+import { createAuthLink, createSubscriptionHandshakeLink } from 'aws-appsync'
+import { ApolloLink } from 'apollo-link'
+import { HttpLink } from 'apollo-link-http'
+import { GraphQLConfig } from 'graphql-playground-react/lib/graphqlConfig';
 
 // import { PermissionSession } from 'graphql-playground/lib/types'
 
@@ -574,7 +578,45 @@ class App extends React.Component<ReduxProps, State> {
     }
   }
 
+  customLinkCreator() {
+    const { config } = this.state; //
+    if (!config || !config.extensions || !config.extensions.appSync) {
+      return null;
+    }
+    return (options): { link: ApolloLink } => {
+      const url = options.endpoint;
+
+      const appSync = config.extensions.appSync[options.endpoint];
+      let headers = {}
+      if (appSync && appSync.auth && appSync.auth.type == 'API_KEY') {
+        headers['X-Api-Key'] = appSync.auth.apiKey;
+      }
+      headers = Object.assign(headers, options.headers)
+            
+      const httpLink = new HttpLink({
+        uri: url,
+        headers: headers,
+        credentials: options.credentials
+      })
+      
+      // appSync not configured => use default
+      if (!appSync) {
+        return {
+          link: httpLink,
+        }
+      }
+
+      const link = ApolloLink.from([
+        // new ComplexObjectLink(undefined),
+        createAuthLink(Object.assign({url}, appSync)),
+        createSubscriptionHandshakeLink(url, httpLink)
+      ].filter(Boolean));
+      return { link }
+    }
+  }
+
   render() {
+    const linkCreator = this.customLinkCreator();
     const { theme, endpoint, platformToken, configString, config } = this.state
 
     return (
@@ -627,6 +669,7 @@ class App extends React.Component<ReduxProps, State> {
               folderName={this.state.folderName}
               showNewWorkspace={true}
               onNewWorkspace={this.handleOpenNewWindow}
+              createApolloLink={linkCreator}
             />
           </div>
         )}

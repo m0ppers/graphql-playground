@@ -83,6 +83,7 @@
   ],
   "dependencies": {
     "@types/ms": "^0.7.30",
+    "aws-appsync": "^1.0.23",
     "classnames": "^2.2.5",
     "date-fns": "^1.29.0",
     "electron-is-dev": "^0.3.0",
