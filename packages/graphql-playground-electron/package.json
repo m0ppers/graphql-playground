@@ -2,9 +2,9 @@
   "name": "graphql-playground-electron",
   "productName": "GraphQL Playground",
   "homepage": "https://github.com/graphcool/graphql-playground",
-  "repository": "graphcool/graphql-playground",
+  "repository": "m0ppers/graphql-playground",
   "description": "GraphQL IDE for better development workflows (GraphQL Subscriptions, interactive docs & collaboration)",
-  "version": "1.6.0",
+  "version": "1.6.0-appsync",
   "author": {
     "name": "Graphcool",
     "email": "hello@graph.cool",
